@@ -126,6 +126,5 @@ def main():
         next_node = bst.predecessor(next_node)
 
 
-
 if __name__ == "__main__":
     main()
