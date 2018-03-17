@@ -1,51 +1,54 @@
-import math
+import unittest
 
 
-def merge_sort(data):
-    if len(data) > 1:
-        mid = len(data) // 2
-        left = data[mid:]
-        right = data[:mid]
+class Solution:
+    @staticmethod
+    def merge_sort(data, p, r):
+        if p < r:
+            q = (p + r) // 2
+            Solution.merge_sort(data, p, q)
+            Solution.merge_sort(data, q + 1, r)
+            Solution.merge(data, p, q, r)
 
-        merge_sort(left)
-        merge_sort(right)
-
-        i = 0
-        j = 0
-        k = 0
-        # merging
+    @staticmethod
+    def merge(data, p, q, r):
+        n1 = q - p
+        n2 = r - q
+        left = []
+        right = []
+        for i in range(0, n1 + 1):
+            left.append(data[p + i])
+        for i in range(0, n2):
+            right.append(data[q + i + 1])
+        i, j = 0, 0
+        k = p
         while i < len(left) and j < len(right):
-            if left[i] < right[j]:
+            if left[i] <= right[j]:
                 data[k] = left[i]
-                i = i + 1
+                i += 1
             else:
                 data[k] = right[j]
-                j = j + 1
-            k = k + 1
-
+                j += 1
+            k += 1
         while i < len(left):
             data[k] = left[i]
-            i = i + 1
-            k = k + 1
-
+            i += 1
+            k += 1
         while j < len(right):
             data[k] = right[j]
-            j = j + 1
-            k = k + 1
+            j += 1
+            k += 1
 
 
-def get_data():
-    return [
-        5,2,4,7,1,3,2,6, -10
-    ]
-
-
-def main():
-    data = get_data()
-    print(data)
-    merge_sort(data)
-    print(data)
+class TestSolution(unittest.TestCase):
+    def test(self):
+        data = [100, -5, 0, -5, 3, 1, -200]
+        Solution.merge_sort(data, 0, len(data) - 1)
+        self.assertEqual(
+            [-200, -5, -5, 0, 1, 3, 100],
+            data
+        )
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main()
